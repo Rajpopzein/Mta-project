@@ -6,6 +6,7 @@ import {
   FlatList,
   Pressable,
   Text,
+  Dimensions
 } from "react-native";
 // import { Icon } from "@react-native-material/core";
 import Card from "../component/Card";
@@ -18,8 +19,19 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import CustomButton from "../component/buttons/CustomButton";
 import IconTextIn from "../component/IconTextIn";
 import SubTitle from "../component/SubTitle";
+import Registration from "./Registration";
+import * as yup from 'yup'
+import Forgetpwd from "./Forgetpwd";
+import { KeyboardAvoidingView } from "react-native";
 
-const Login = ({ popup }) => {
+// import Dynamic from "../component/dynamic";
+
+
+
+
+
+
+const Login = ({ popup, auth , navigation}) => {
   const [isActive, setIsactive] = useState("News Feeds");
   const [mvisibility, setMvisibility] = useState(false);
   const [moduleActive, setModuleActive] = useState(false);
@@ -51,61 +63,22 @@ const Login = ({ popup }) => {
   }
 
   return (
-    <SafeAreaView>
+    <View> 
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'alignItem' : 'justifyContent'}
+        >
       <View style={style.modulepopup}>
-        <RegisterModel visibility={moduleActive} pressval={closeModule}>
-          <View style={style.outerModel}>
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-              <Pressable
-                onPress={() => {
-                  setModuleActive(false);
-                }}
-              >
-                <CrossIcon />
-              </Pressable>
-            </View>
-            <View>
-              <View style={{marginBottom:20}}>
-                <SubTitle colors={"#000"}>SIGNUP</SubTitle>
-              </View>
-              <SubTitle>Name</SubTitle>
-              <IconTextIn icon={"user"} placeholder={"Name"} />
-              <SubTitle>Phone</SubTitle>
-              <IconTextIn icon={"phone"} placeholder={"Phone"} keytype={"number-pad"} />
-              <SubTitle>Email</SubTitle>
-              <IconTextIn icon={"envelope"} placeholder={"Email"} keytype={"email-address"}/>
-
-              <CustomButton style={style.loginBtn} txtclr={style.loginBtnText}>
-                SignUp
-              </CustomButton>
-            </View>
-          </View>
+      <RegisterModel visibility={moduleActive} pressval={closeModule}>
+        
+           <Registration  form_visibility={setModuleActive}/>
+        
         </RegisterModel>
       </View>
+      </KeyboardAvoidingView>
       {/* Forget popup */}
       <View style={style.modulepopup}>
           <RegisterModel visibility={mvisibility}>
-            <View style={style.forgetouterModel}>
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-              <Pressable
-                onPress={() => {
-                  setMvisibility(false);
-                }}
-              >
-                <CrossIcon />
-              </Pressable>
-            </View>
-            <View style={{marginBottom:20}}>
-                <SubTitle colors={"#000"}>Forget Password</SubTitle>
-              </View>
-            <SubTitle>Registered Email Id</SubTitle>
-              <IconTextIn icon={"envelope"} placeholder={"Name"}  keytype={"email-address"}/>
-            <View>
-            <CustomButton style={style.forgetBtn} txtclr={style.loginBtnText}>
-                SUBMIT
-              </CustomButton>
-            </View>
-            </View>
+              <Forgetpwd setM={setMvisibility}/>
           </RegisterModel>
       </View>
       <View style={style.LoginMain}>
@@ -114,7 +87,7 @@ const Login = ({ popup }) => {
           source={require("../assets/images/09.jpg")}
         />
         <View style={style.loginCard}>
-          <Card visibility={modulepop} forgetvisibility={forgetmodulepop} />
+          <Card visibility={modulepop} forgetvisibility={forgetmodulepop} auth={auth} navigation={navigation}/>
         </View>
       </View>
       <View style={style.feeds}>
@@ -162,11 +135,16 @@ const Login = ({ popup }) => {
           </View>
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default Login;
+
+const devicehights = Dimensions.get('window').height
+const devicewidth = Dimensions.get('window').width
+
+// console.log(devicehights)
 
 const style = StyleSheet.create({
   loginBtn: {
@@ -176,13 +154,7 @@ const style = StyleSheet.create({
     overflow: "hidden",
     padding:10
   },
-  forgetBtn: {
-    marginTop:10,
-    borderRadius: 40,
-    backgroundColor: "#146af5",
-    overflow: "hidden",
-    padding:10
-  },
+
   loginBtnText: {
     color: "#fff",
     fontSize: 15,
@@ -191,11 +163,11 @@ const style = StyleSheet.create({
   },
   LoginMain: {
     flex: 1,
-    // marginTop: 30,
+    // marginTop: 3,
   },
   loginbanner: {
-    height: 270,
-    width: "100%",
+    height: devicehights * 30 / 100,
+    width: devicewidth,
     position: "relative",
     alignItems: "stretch",
     resizeMode: "stretch",
@@ -244,24 +216,4 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  outerModel: {
-    backgroundColor: "#ffff",
-    width: 335,
-    height: 465,
-    borderRadius: 25,
-    elevation: 12,
-    padding: 20,
-    borderWidth:0.35,
-    borderColor:'gray'
-  },
-  forgetouterModel:{
-    backgroundColor: "#ffff",
-    width: 335,
-    height: 240,
-    borderRadius: 25,
-    elevation: 12,
-    padding: 20,
-    borderWidth:0.35,
-    borderColor:'gray'
-  }
 });

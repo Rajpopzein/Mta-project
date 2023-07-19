@@ -1,12 +1,12 @@
 import { Surface, Text } from "@react-native-material/core";
-import { StyleSheet, View, TextInput } from "react-native";
+import { StyleSheet, View, TextInput, Dimensions } from "react-native";
 import Title from "./Title";
 import SubTitle from "./SubTitle";
 import CustomButton from "./buttons/CustomButton";
 import { useEffect, useState } from "react";
 // import RegisterModel from "./RegisterModel";
 
-const Card = ({visibility, forgetvisibility}) => {
+const Card = ({visibility, forgetvisibility, auth, navigation}) => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -15,7 +15,7 @@ const Card = ({visibility, forgetvisibility}) => {
   const validate = () => {
     if(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email) & password.length >=8)
     {
-     console.log("working good")
+     navigation.navigate("Otp")
     }
     else{
       setValiditytime(true)
@@ -99,14 +99,16 @@ const Card = ({visibility, forgetvisibility}) => {
 
 export default Card;
 
+const devicehight = Dimensions.get('screen').height
+
 const style = StyleSheet.create({
   cardOutLine: {
     backgroundColor: "#fff",
-    width: 350,
-    height: 360,
+    width: "90%",
+    height: devicehight * 44 / 100,
     borderRadius: 20,
     marginTop: 100,
-    padding: 20,
+    padding: "5%",
   },
   innerCard: {
     flex: 1,
@@ -124,7 +126,7 @@ const style = StyleSheet.create({
     borderRadius: 18,
   },
   LoginBtnContainer: {
-    marginVertical: 20,
+    marginVertical: "6%",
   },
   loginBtn: {
     borderRadius: 40,
